@@ -106,8 +106,8 @@ public class Gameplay extends AppCompatActivity {
                     if(potentialY<0){
                         potentialY=0;
                     }
-                    if(potentialY>Height-size){
-                        potentialY=Height-size;
+                    if(potentialY>9*size-size){
+                        potentialY=9*size-size;
                     }
                     //collision avec les murs
                     for (Wall wall:wallList) {
