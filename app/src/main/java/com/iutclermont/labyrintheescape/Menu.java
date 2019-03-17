@@ -34,6 +34,11 @@ public class Menu extends AppCompatActivity {
         return true;
     }
 
+    public void onScores(View view){
+        Intent scoresActivity = new Intent(this,ScoresActivity.class);
+        startActivity(scoresActivity);
+    }
+
     public void onExit(View view){
         finish();
     }
