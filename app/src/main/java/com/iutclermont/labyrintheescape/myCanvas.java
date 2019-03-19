@@ -48,7 +48,7 @@ public class myCanvas extends View {
         this.myPersImg=Bitmap.createScaledBitmap(bitmapP , size, size, false);
 
         //pour les murs
-        Bitmap bitmapW = BitmapFactory.decodeResource(res,R.mipmap.wall);
+        Bitmap bitmapW = BitmapFactory.decodeResource(res,R.mipmap.wall2);
         this.myWallImg=Bitmap.createScaledBitmap(bitmapW , size, size, false);
 
         //pour l'arrivé
