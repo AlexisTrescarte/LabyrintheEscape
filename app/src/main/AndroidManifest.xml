@@ -21,6 +21,9 @@
             android:name=".Gameplay"
             android:screenOrientation="landscape" />
         <activity
+            android:name=".ScoresActivity"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".Menu"
             android:screenOrientation="landscape" />
         <activity
@@ -32,7 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScoresActivity" />
     </application>
 
 </manifest>

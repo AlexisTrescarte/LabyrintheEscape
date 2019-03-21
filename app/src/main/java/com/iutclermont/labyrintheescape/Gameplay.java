@@ -32,7 +32,6 @@ public class Gameplay extends AppCompatActivity {
         //avoir la taille de l'écran
         Display ecran = getWindowManager().getDefaultDisplay();
         final int Width= ecran.getWidth();
-        final int Height=ecran.getHeight();
         //
 
         personnage=new Personage(Width/16);
