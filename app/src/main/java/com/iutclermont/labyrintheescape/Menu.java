@@ -10,11 +10,13 @@ import static android.os.SystemClock.sleep;
 
 public class Menu extends AppCompatActivity {
 
+    private int niveaux;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        this.niveaux=1;
     }
 
     public void onPlay(View view){
@@ -25,6 +27,10 @@ public class Menu extends AppCompatActivity {
     public void onSelectLevel(View view){
         Intent selectLevel = new Intent(this,SelectLevel.class);
         startActivity(selectLevel);
+        if(selectLevel.hasExtra("niv")){
+            this.niveaux=selectLevel.getIntExtra("niv",1);
+            System.out.println(this.niveaux+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
     }
 
     @Override
@@ -32,6 +38,11 @@ public class Menu extends AppCompatActivity {
 
         super.onTouchEvent(event);
         return true;
+    }
+
+    public void onScores(View view){
+        Intent scoresActivity = new Intent(this,ScoresActivity.class);
+        startActivity(scoresActivity);
     }
 
     public void onExit(View view){

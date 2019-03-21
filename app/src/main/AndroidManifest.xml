@@ -16,7 +16,7 @@
         <activity android:name=".winActivity"></activity>
         <activity
             android:name=".SelectLevel"
-            android:screenOrientation="landscape" />
+             />
         <activity
             android:name=".Gameplay"
             android:screenOrientation="landscape" />
@@ -32,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ScoresActivity" />
     </application>
 
 </manifest>

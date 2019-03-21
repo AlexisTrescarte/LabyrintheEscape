@@ -152,6 +152,7 @@ public class Gameplay extends AppCompatActivity {
     }
 
     public void onWin(){
+        finish();
         Intent gameplay = new Intent(this, winActivity.class);
         startActivity(gameplay);
     }
