@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 
 import java.io.IOException;
@@ -28,16 +29,18 @@ public class Gameplay extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        String niveau;
         //avoir la taille de l'écran
         Display ecran = getWindowManager().getDefaultDisplay();
         final int Width= ecran.getWidth();
+        niveau=getIntent().getStringExtra("level");
+        Log.v("saluts", niveau);
         //
 
         personnage=new Personage(Width/16);
 
         //On récupére les item du niveau
-        reader=new FileReader(1);
+        reader=new FileReader(niveau);
         try {
             wallList = reader.getWall(Width,this);
         } catch (IOException e) {
