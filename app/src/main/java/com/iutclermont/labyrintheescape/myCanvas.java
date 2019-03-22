@@ -15,7 +15,9 @@ public class myCanvas extends View {
     private Bitmap myWallImg;
     private Bitmap myBushImg;
     private Bitmap myArriveImg;
+    private Bitmap myZombieImg;
     private Personage myPers;
+    private Personage myZombie;
     private List<Wall> listWall;
 
     public myCanvas(Context context) {
@@ -23,10 +25,10 @@ public class myCanvas extends View {
     }
 
     @Override
-    public void onDraw(Canvas canvas){
-        super.onDraw(canvas);
+    public void draw(Canvas canvas){
+        super.draw(canvas);
         canvas.drawBitmap(myPersImg,myPers.getX(),myPers.getY(),null);
-
+        canvas.drawBitmap(myZombieImg,myZombie.getX(),myZombie.getY(),null);
         for (Wall wall:listWall) {
             switch (wall.getType()){
                 case 'A' :
@@ -59,14 +61,19 @@ public class myCanvas extends View {
         Bitmap bitmapB = BitmapFactory.decodeResource(res,R.mipmap.bush);
         this.myBushImg=Bitmap.createScaledBitmap(bitmapB , size, size, false);
 
+        //pour les buisson
+        Bitmap bitmapZ = BitmapFactory.decodeResource(res,R.mipmap.zombie);
+        this.myZombieImg=Bitmap.createScaledBitmap(bitmapZ , size, size, false);
+
         this.listWall=listWall;
     }
 
 
 
 
-    public void setPers(Personage myPers){
+    public void setPers(Personage myPers,Personage zombie){
         this.myPers=myPers;
+        this.myZombie = zombie;
     }
 
 }

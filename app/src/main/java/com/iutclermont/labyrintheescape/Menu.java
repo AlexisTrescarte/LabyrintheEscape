@@ -27,9 +27,10 @@ public class Menu extends AppCompatActivity {
     public void onSelectLevel(View view){
         Intent selectLevel = new Intent(this,SelectLevel.class);
         startActivity(selectLevel);
+
         if(selectLevel.hasExtra("niv")){
             this.niveaux=selectLevel.getIntExtra("niv",1);
-            System.out.println(this.niveaux+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println(this.niveaux+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
     }
 
