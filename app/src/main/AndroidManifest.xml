@@ -18,7 +18,7 @@
             android:name=".SelectLevel"
              />
         <activity
-            android:name=".GameManager"
+            android:name=".GameActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ScoresActivity"

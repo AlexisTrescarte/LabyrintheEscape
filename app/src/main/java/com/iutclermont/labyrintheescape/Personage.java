@@ -5,6 +5,8 @@ public class Personage {
     private float X;
     private float Y;
 
+
+
     private Boolean visible;
     private Boolean canMove;
 
@@ -42,5 +44,9 @@ public class Personage {
 
     public void setCanMove(Boolean canMove) {
         this.canMove = canMove;
+    }
+
+    public Boolean getVisible() {
+        return visible;
     }
 }
