@@ -2,14 +2,12 @@ package com.iutclermont.labyrintheescape;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 
 import java.io.IOException;
@@ -17,17 +15,17 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 
-public class Gameplay extends AppCompatActivity {
+public class GameManager extends AppCompatActivity {
 
     private Personage personnage;
-    public Personage zombie;
-    private myCanvas myCanvas;
+    private Personage zombie;
     private SensorManager mSensorManager = null;
     private Sensor mAccelerometer = null;
     private List<Wall> wallList;
     private FileReader reader;
-    private DrawingThread drawingThread;
+    private GameThread gameLoop;
     private int size;
+    private int width;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +33,34 @@ public class Gameplay extends AppCompatActivity {
 
         //avoir la taille de l'écran
         Display ecran = getWindowManager().getDefaultDisplay();
-        final int Width= ecran.getWidth();
+        width= ecran.getWidth();
         //
 
-        personnage=new Personage(Width/16,0,0);
-        zombie=new Personage(Width/16,Width-Width/16,8*Width/9);
+        setPersonnage(new Personage(0,0));
+        setZombie(new Personage(width-width/16,8*width/9));
 
 
         //On récupére les item du niveau
         reader=new FileReader(1);
         try {
-            wallList = reader.getWall(Width,this);
+            setWallList(reader.getWall(width,this));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        drawingThread=new DrawingThread(this,Width,wallList,personnage,zombie);
-        //met en place la surface
+
+        //canvas = new GameView(this);
+        setContentView(R.layout.activity_gameplay);
+
+
+        // Boucle de jeux
+        gameLoop = new GameThread(this);
+        gameLoop.setRunning(true);
+        gameLoop.start();
 
 
         //taille des objet
-        size = Width/16;
+        size = width/16;
 
         //on gére l'accelerométre
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -72,38 +77,38 @@ public class Gameplay extends AppCompatActivity {
                 float potentialX=0;
                 float potentialY=0;
 
-                if((abs(x)>4 || abs(y)>4) && personnage.getCanMove() ){
+                if((abs(x)>4 || abs(y)>4) && getPersonnage().getCanMove() ){
 
-                    personnage.setCanMove(false);
+                    getPersonnage().setCanMove(false);
                     if(abs(x)>abs(y)){
                         if(x>0){
-                            potentialX= personnage.getX()+size/2;
+                            potentialX= getPersonnage().getX()+size/2;
                         }
                         else{
-                            potentialX= personnage.getX()-size/2;
+                            potentialX= getPersonnage().getX()-size/2;
                         }
-                         potentialY=personnage.getY();
+                         potentialY= getPersonnage().getY();
                     }
                     else{
-                        potentialX=personnage.getX();
+                        potentialX= getPersonnage().getX();
                         if(y>0){
-                            potentialY= personnage.getY()+size/2;
+                            potentialY= getPersonnage().getY()+size/2;
                         }
                         else{
-                            potentialY= personnage.getY()-size/2;
+                            potentialY= getPersonnage().getY()-size/2;
                         }
                     }
 
                     // Puis on modifie les coordonnées en fonction de la vitesse
-                    personnage.setVisible(true);
+                    getPersonnage().setVisible(true);
                     collision=false;
 
                     //vérification de la position dans l'espace de jeux
                     if(potentialX <0){
                         potentialX=0;
                     }
-                    if(potentialX>Width-size){
-                        potentialX=Width-size;
+                    if(potentialX>width-size){
+                        potentialX=width-size;
                     }
                     if(potentialY<0){
                         potentialY=0;
@@ -112,7 +117,7 @@ public class Gameplay extends AppCompatActivity {
                         potentialY=9*size-size;
                     }
                     //collision avec les murs
-                    for (Wall wall:wallList) {
+                    for (Wall wall: getWallList()) {
 
                         if((potentialX==wall.getX() || potentialX==wall.getX()+size/2 || potentialX+size/2==wall.getX() || potentialX+size/2==wall.getX()+size/2)&&( potentialY==wall.getY() || potentialY==wall.getY()+size/2 || potentialY+size/2==wall.getY() || potentialY+size/2==wall.getY()+size/2)){
                             switch (wall.getType()){
@@ -120,7 +125,7 @@ public class Gameplay extends AppCompatActivity {
                                     collision=true;
                                     break;
                                 case 'B':
-                                    personnage.setVisible(false);
+                                    getPersonnage().setVisible(false);
                                     break;
                                 case 'A':
                                     //stauper le mouvement !
@@ -130,16 +135,17 @@ public class Gameplay extends AppCompatActivity {
                             }
                         }
                     }
+                    if((personnage.getX()==zombie.getX() || personnage.getX()==zombie.getX()+size/2 || personnage.getX()+size/2==zombie.getX() || personnage.getX()+size/2==zombie.getX()+size/2) && (personnage.getY()==zombie.getY() || personnage.getY()==zombie.getY()+size/2 || personnage.getY()+size/2==zombie.getY() || personnage.getY()+size/2==zombie.getY()+size/2)){
+                        onLoose();
+                    }
                 }
 
                 if(collision==false){
-                    personnage.setX(potentialX);
-                    personnage.setY(potentialY);
-
-                    setContentView(myCanvas);
+                    getPersonnage().setX(potentialX);
+                    getPersonnage().setY(potentialY);
                 }
 
-                personnage.setCanMove(true);
+                getPersonnage().setCanMove(true);
 
             }
 
@@ -151,39 +157,42 @@ public class Gameplay extends AppCompatActivity {
         };
         mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
-        GameThread gameLoop = new GameThread(this);
-        gameLoop.setRunning(true);
-        gameLoop.start();
-
-
 
     }
 
     public void onWin(){
+        gameLoop.setRunning(false);
         finish();
-        Intent gameplay = new Intent(this, winActivity.class);
-        startActivity(gameplay);
+        Intent win = new Intent(this, WinActivity.class);
+        startActivity(win);
+    }
+
+    public void onLoose(){
+        gameLoop.setRunning(false);
+        finish();
+
     }
 
     public void moveZombie(int direction){
+        Boolean collision=false;
         float potentialX=0;
         float potentialY=0;
         switch (direction){
             case 0:
-                potentialX=zombie.getX()+size;
-                potentialY=zombie.getY();
+                potentialX= getZombie().getX()+size/2;
+                potentialY= getZombie().getY();
                 break;
             case 1:
-                potentialX=zombie.getX()-size;
-                potentialY=zombie.getY();
+                potentialX= getZombie().getX()-size/2;
+                potentialY= getZombie().getY();
                 break;
             case 2:
-                potentialY=zombie.getY()-size;
-                potentialX=zombie.getX();
+                potentialY= getZombie().getY()-size/2;
+                potentialX= getZombie().getX();
                 break;
             case 3:
-                potentialY=zombie.getY()-size;
-                potentialX=zombie.getX();
+                potentialY= getZombie().getY()-size/2;
+                potentialX= getZombie().getX();
                 break;
         }
 
@@ -200,19 +209,47 @@ public class Gameplay extends AppCompatActivity {
             potentialY=8*size;
         }
         //collision avec les murs
-        for (Wall wall:wallList) {
+        for (Wall wall: getWallList()) {
 
-            if(!(wall.getType()=='W' && (potentialX==wall.getX() || potentialX==wall.getX()+size/2 || potentialX+size/2==wall.getX() || potentialX+size/2==wall.getX()+size/2)&&( potentialY==wall.getY() || potentialY==wall.getY()+size/2 || potentialY+size/2==wall.getY() || potentialY+size/2==wall.getY()+size/2))){
-
-                zombie.setX(potentialX);
-                zombie.setY(potentialY);
+            if((wall.getType()=='W') && (potentialX==wall.getX() || potentialX==wall.getX()+size/2 || potentialX+size/2==wall.getX() || potentialX+size/2==wall.getX()+size/2) && ( potentialY==wall.getY() || potentialY==wall.getY()+size/2 || potentialY+size/2==wall.getY() || potentialY+size/2==wall.getY()+size/2)){
+                collision=true;
             }
+        }
+
+        if(collision==false){
+            getZombie().setX(potentialX);
+            getZombie().setY(potentialY);
         }
 
     }
 
 
+    public Personage getPersonnage() {
+        return personnage;
+    }
 
+    public void setPersonnage(Personage personnage) {
+        this.personnage = personnage;
+    }
 
+    public Personage getZombie() {
+        return zombie;
+    }
+
+    public void setZombie(Personage zombie) {
+        this.zombie = zombie;
+    }
+
+    public List<Wall> getWallList() {
+        return wallList;
+    }
+
+    public void setWallList(List<Wall> wallList) {
+        this.wallList = wallList;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }
                                                                                         

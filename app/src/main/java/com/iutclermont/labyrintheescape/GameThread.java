@@ -1,16 +1,14 @@
 package com.iutclermont.labyrintheescape;
 
-import android.util.Log;
-
 import java.util.Random;
 
 public class GameThread extends Thread {
 
     private Boolean running = false;
-    private Gameplay myGameplay;
+    private GameManager myGameManager;
 
-    public GameThread(Gameplay myG){
-        this.myGameplay=myG;
+    public GameThread(GameManager myG){
+        this.myGameManager =myG;
     }
 
     @Override
@@ -19,12 +17,12 @@ public class GameThread extends Thread {
             Random rand = new Random();
 
             try {
-                sleep(3000);
+                sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            myGameplay.moveZombie(rand.nextInt(4));
+            myGameManager.moveZombie(rand.nextInt(4));
 
         }
     }

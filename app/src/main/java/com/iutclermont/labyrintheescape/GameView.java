@@ -5,30 +5,36 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 
 import java.util.List;
 
-public class myCanvas extends View {
+public class GameView extends View implements SurfaceHolder.Callback{
 
     private Bitmap myPersImg;
     private Bitmap myWallImg;
     private Bitmap myBushImg;
     private Bitmap myArriveImg;
     private Bitmap myZombieImg;
-    private Personage myPers;
-    private Personage myZombie;
+    private GameManager gameManager;
     private List<Wall> listWall;
+    DrawingThread myThread;
 
-    public myCanvas(Context context) {
-        super(context);
+    public GameView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        gameManager =(GameManager) context;
+        myThread=new DrawingThread(context, gameManager.getWidth(),this);
+        myThread.start();
     }
 
     @Override
-    public void draw(Canvas canvas){
-        super.draw(canvas);
-        canvas.drawBitmap(myPersImg,myPers.getX(),myPers.getY(),null);
-        canvas.drawBitmap(myZombieImg,myZombie.getX(),myZombie.getY(),null);
+    public void onDraw(Canvas canvas){
+        super.onDraw(canvas);
+        canvas.drawBitmap(myPersImg, gameManager.getPersonnage().getX(), gameManager.getPersonnage().getY(),null);
+        canvas.drawBitmap(myZombieImg, gameManager.getZombie().getX(), gameManager.getZombie().getY(),null);
         for (Wall wall:listWall) {
             switch (wall.getType()){
                 case 'A' :
@@ -40,6 +46,7 @@ public class myCanvas extends View {
 
             }
         }
+
     }
 
     public void setItemImg(Context c , int Width, List<Wall> listWall){
@@ -68,12 +75,19 @@ public class myCanvas extends View {
         this.listWall=listWall;
     }
 
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
 
-
-
-    public void setPers(Personage myPers,Personage zombie){
-        this.myPers=myPers;
-        this.myZombie = zombie;
     }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
+
 
 }

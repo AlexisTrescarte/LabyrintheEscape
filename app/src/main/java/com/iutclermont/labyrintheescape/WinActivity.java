@@ -3,7 +3,7 @@ package com.iutclermont.labyrintheescape;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class winActivity extends AppCompatActivity {
+public class WinActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

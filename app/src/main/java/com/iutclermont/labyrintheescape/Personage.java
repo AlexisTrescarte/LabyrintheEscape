@@ -1,7 +1,5 @@
 package com.iutclermont.labyrintheescape;
 
-import android.graphics.RectF;
-
 public class Personage {
 
     private float X;
@@ -9,14 +7,12 @@ public class Personage {
 
     private Boolean visible;
     private Boolean canMove;
-    private int size;
 
 
-    public Personage(int size,int x,int y){
+    public Personage(int x,int y){
         this.visible=true;
         this.X=x;
         this.Y=y;
-        this.size=size;
     }
 
 
