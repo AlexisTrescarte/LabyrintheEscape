@@ -13,15 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-        <activity android:name=".WinActivity"></activity>
+        <activity android:name=".winActivity"></activity>
         <activity
             android:name=".SelectLevel"
              />
         <activity
-            android:name=".GameManager"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".ScoresActivity"
+            android:name=".Gameplay"
             android:screenOrientation="landscape" />
         <activity
             android:name=".Menu"
@@ -35,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ScoresActivity" />
     </application>
 
 </manifest>
