@@ -2,24 +2,19 @@ package com.iutclermont.labyrintheescape;
 
 import android.content.Context;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 public class FileReader {
 
-    private int chemin;
+    private String chemin;
 
-    public FileReader(String niv){
-        int niveau = parseInt(niv);
-        switch (niveau){
-            case 1 : chemin = R.raw.niv1;break;
-            case 2 : chemin = R.raw.niv2;break;
-            case 3 : chemin = R.raw.niv3;break;
-            case 4 : chemin = R.raw.niv4;break;
+    public FileReader(int niv){
+        switch (niv){
+            case 1 : chemin = "niv1";break;
         }
     }
 
@@ -33,7 +28,7 @@ public class FileReader {
         int i = 0;
 
 
-        InputStream myFich =context.getResources().openRawResource(chemin);
+        InputStream myFich = context.getResources().openRawResource(R.raw.niv1);
 
 
         while ((content = myFich.read()) != -1) {
