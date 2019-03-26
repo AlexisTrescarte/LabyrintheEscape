@@ -12,10 +12,10 @@ public class Personage {
     private int size;
 
 
-    public Personage(int size,int x,int y){
+    public Personage(int size){
         this.visible=true;
-        this.X=x;
-        this.Y=y;
+        this.X=0;
+        this.Y=0;
         this.size=size;
     }
 

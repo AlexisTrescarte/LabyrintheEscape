@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
-import static android.os.SystemClock.sleep;
-
 public class Menu extends AppCompatActivity {
 
     private int niveaux;
@@ -20,7 +18,7 @@ public class Menu extends AppCompatActivity {
     }
 
     public void onPlay(View view){
-        Intent gameplay = new Intent(this, Gameplay.class);
+        Intent gameplay = new Intent(this, GameManager.class);
         startActivity(gameplay);
     }
 

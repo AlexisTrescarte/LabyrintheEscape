@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 
 import java.io.IOException;
@@ -20,14 +19,11 @@ import static java.lang.Math.abs;
 public class Gameplay extends AppCompatActivity {
 
     private Personage personnage;
-    public Personage zombie;
     private myCanvas myCanvas;
     private SensorManager mSensorManager = null;
     private Sensor mAccelerometer = null;
     private List<Wall> wallList;
     private FileReader reader;
-    private DrawingThread drawingThread;
-    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +32,10 @@ public class Gameplay extends AppCompatActivity {
         //avoir la taille de l'écran
         Display ecran = getWindowManager().getDefaultDisplay();
         final int Width= ecran.getWidth();
+        final int Height=ecran.getHeight();
         //
 
-        personnage=new Personage(Width/16,0,0);
-        zombie=new Personage(Width/16,Width-Width/16,8*Width/9);
-
+        personnage=new Personage(Width/16);
 
         //On récupére les item du niveau
         reader=new FileReader(1);
@@ -50,12 +45,15 @@ public class Gameplay extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        drawingThread=new DrawingThread(this,Width,wallList,personnage,zombie);
         //met en place la surface
-
+        myCanvas = new myCanvas(this);
+        myCanvas.setItemImg(this,Width,wallList);
+        myCanvas.setBackgroundColor(Color.GRAY);
+        setContentView(myCanvas);
+        myCanvas.setPers(personnage);
 
         //taille des objet
-        size = Width/16;
+        final int size = Width/16;
 
         //on gére l'accelerométre
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -151,12 +149,6 @@ public class Gameplay extends AppCompatActivity {
         };
         mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
-        GameThread gameLoop = new GameThread(this);
-        gameLoop.setRunning(true);
-        gameLoop.start();
-
-
-
     }
 
     public void onWin(){
@@ -164,55 +156,5 @@ public class Gameplay extends AppCompatActivity {
         Intent gameplay = new Intent(this, winActivity.class);
         startActivity(gameplay);
     }
-
-    public void moveZombie(int direction){
-        float potentialX=0;
-        float potentialY=0;
-        switch (direction){
-            case 0:
-                potentialX=zombie.getX()+size;
-                potentialY=zombie.getY();
-                break;
-            case 1:
-                potentialX=zombie.getX()-size;
-                potentialY=zombie.getY();
-                break;
-            case 2:
-                potentialY=zombie.getY()-size;
-                potentialX=zombie.getX();
-                break;
-            case 3:
-                potentialY=zombie.getY()-size;
-                potentialX=zombie.getX();
-                break;
-        }
-
-        if(potentialX <0){
-            potentialX=0;
-        }
-        if(potentialX>size*15){
-            potentialX=size*15;
-        }
-        if(potentialY<0){
-            potentialY=0;
-        }
-        if(potentialY>8*size){
-            potentialY=8*size;
-        }
-        //collision avec les murs
-        for (Wall wall:wallList) {
-
-            if(!(wall.getType()=='W' && (potentialX==wall.getX() || potentialX==wall.getX()+size/2 || potentialX+size/2==wall.getX() || potentialX+size/2==wall.getX()+size/2)&&( potentialY==wall.getY() || potentialY==wall.getY()+size/2 || potentialY+size/2==wall.getY() || potentialY+size/2==wall.getY()+size/2))){
-
-                zombie.setX(potentialX);
-                zombie.setY(potentialY);
-            }
-        }
-
-    }
-
-
-
-
 }
                                                                                         
