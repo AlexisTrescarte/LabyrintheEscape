@@ -3,7 +3,6 @@ package com.iutclermont.labyrintheescape;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -22,7 +21,6 @@ public class FileReader {
             case 2 : chemin = R.raw.niv2;break;
             case 3 : chemin = R.raw.niv3;break;
             case 4 : chemin = R.raw.niv4;break;
-
         }
     }
 

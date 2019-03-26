@@ -23,6 +23,7 @@ public class Menu extends AppCompatActivity {
 
     public void onPlay(View view){
         Intent gameplay = new Intent(this, Gameplay.class);
+
         gameplay.putExtra("level",niveaux);
         startActivity(gameplay);
     }
@@ -34,6 +35,7 @@ public class Menu extends AppCompatActivity {
         //    this.niveaux = selectLevel.getStringExtra("niv");
         //    System.out.println(this.niveaux + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //}
+
     }
 
     @Override
