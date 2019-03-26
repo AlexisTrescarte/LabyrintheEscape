@@ -6,12 +6,12 @@ import android.util.Log;
 
 public class DrawingThread extends Thread {
     private GameView myGameView;
-    private GameActivity g;
+    private GameManager g;
 
 
     public DrawingThread(Context myG, int w,GameView myGameView){
         super();
-        GameActivity g = (GameActivity) myG;
+        GameManager g = (GameManager) myG;
         this.g=g;
         this.myGameView=myGameView;
         myGameView.setItemImg(myG,w,g.getWallList());

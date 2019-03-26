@@ -10,22 +10,23 @@ public class SelectLevel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_level);
-        finish();
+        //finish();
     }
 
     public void onOne(View view){
-        getIntent().putExtra("niveau",1);
+        getIntent().putExtra("niv",1);
+
     }
 
     public void onTwo(View view){
-        getIntent().putExtra("niveau",2);
+        getIntent().putExtra("niv",2);
     }
 
     public void onTree(View view){
-        getIntent().putExtra("niveau",3);
+        getIntent().putExtra("niv",3);
     }
 
     public void onFour(View view){
-        getIntent().putExtra("niveau",4);
+        getIntent().putExtra("niv",4);
     }
 }

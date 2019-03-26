@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 
-public class GameActivity extends AppCompatActivity {
+public class GameManager extends AppCompatActivity {
 
     private Personage personnage;
     private Personage zombie;
@@ -26,8 +26,6 @@ public class GameActivity extends AppCompatActivity {
     private GameThread gameLoop;
     private int size;
     private int width;
-    private String niveau;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +34,14 @@ public class GameActivity extends AppCompatActivity {
         //avoir la taille de l'écran
         Display ecran = getWindowManager().getDefaultDisplay();
         width= ecran.getWidth();
-
-
-        this.niveau =getIntent().getStringExtra("level");
-
+        //
 
         setPersonnage(new Personage(0,0));
         setZombie(new Personage(width-width/16,8*width/9));
 
 
         //On récupére les item du niveau
-        reader=new FileReader(niveau);
+        reader=new FileReader(1);
         try {
             setWallList(reader.getWall(width,this));
         } catch (IOException e) {
@@ -82,7 +77,7 @@ public class GameActivity extends AppCompatActivity {
                 float potentialX=0;
                 float potentialY=0;
 
-                if((abs(x)>2 || abs(y)>2) && getPersonnage().getCanMove() ){
+                if((abs(x)>4 || abs(y)>4) && getPersonnage().getCanMove() ){
 
                     getPersonnage().setCanMove(false);
                     if(abs(x)>abs(y)){
@@ -140,7 +135,7 @@ public class GameActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    if(personnage.getVisible()==true && (personnage.getX()==zombie.getX() || personnage.getX()==zombie.getX()+size/2 || personnage.getX()+size/2==zombie.getX() || personnage.getX()+size/2==zombie.getX()+size/2) && (personnage.getY()==zombie.getY() || personnage.getY()==zombie.getY()+size/2 || personnage.getY()+size/2==zombie.getY() || personnage.getY()+size/2==zombie.getY()+size/2)){
+                    if((personnage.getX()==zombie.getX() || personnage.getX()==zombie.getX()+size/2 || personnage.getX()+size/2==zombie.getX() || personnage.getX()+size/2==zombie.getX()+size/2) && (personnage.getY()==zombie.getY() || personnage.getY()==zombie.getY()+size/2 || personnage.getY()+size/2==zombie.getY() || personnage.getY()+size/2==zombie.getY()+size/2)){
                         onLoose();
                     }
                 }
@@ -151,7 +146,6 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 getPersonnage().setCanMove(true);
-
 
             }
 
