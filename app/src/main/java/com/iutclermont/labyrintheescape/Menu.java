@@ -22,7 +22,7 @@ public class Menu extends AppCompatActivity {
     }
 
     public void onPlay(View view){
-        Intent gameplay = new Intent(this, Gameplay.class);
+        Intent gameplay = new Intent(this, GameManager.class);
 
         gameplay.putExtra("level",niveaux);
         startActivity(gameplay);

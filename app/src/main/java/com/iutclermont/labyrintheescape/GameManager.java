@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 
-public class GameActivity extends AppCompatActivity {
+public class GameManager extends AppCompatActivity {
 
     private Personage personnage;
     private Personage zombie;
